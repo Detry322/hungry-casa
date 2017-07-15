@@ -21,6 +21,7 @@ export function loginUserSuccess(token) {
         payload: {
             token,
         },
+        
     };
 }
 

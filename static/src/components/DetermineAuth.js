@@ -20,6 +20,7 @@ export function DetermineAuth(Component) {
 
     class AuthenticatedComponent extends React.Component {
 
+
         componentWillMount() {
             this.checkAuth();
             this.state = {
