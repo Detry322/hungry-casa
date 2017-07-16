@@ -7,9 +7,12 @@ import { Route } from 'react-router';
 import { Home } from './components/Home';
 import { NotFound } from './components/NotFound';
 
+export const HOME_PATH = '/';
+export const START_ORDER_PATH = '/start';
+
 export default (
     <div>
-        <Route exact path="/" component={Home} />
+        <Route exact path={HOME_PATH} component={Home} />
         <Route path="/*" component={NotFound} />
     </div>
 );
