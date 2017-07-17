@@ -60,6 +60,7 @@
     "lodash": "^4.5.1",
     "material-ui": "^0.16.4",
     "mocha": "^3.0.2",
+    "moment": "^2.18.1",
     "morgan": "^1.6.1",
     "node-sass": "^3.4.2",
     "postcss-import": "^9.0.0",
@@ -100,5 +101,7 @@
     "webpack-merge": "^1.0.2",
     "yargs": "^6.5.0"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+  }
 }

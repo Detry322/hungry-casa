@@ -9,7 +9,7 @@ import {
     REGISTER_USER_FAILURE,
     REGISTER_USER_REQUEST,
     REGISTER_USER_SUCCESS,
-} from '../constants/index';
+} from '../constants';
 
 const initialState = {
     token: null,

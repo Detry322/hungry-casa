@@ -27,7 +27,7 @@ ReactDOM.render(
         <MuiThemeProvider muiTheme={getMuiTheme()}>
             <section>
                 <Header />
-                <div className="container" style={{ marginTop: 10, paddingBottom: 250 }}>
+                <div className="container">
                     <Router history={history}>
                         {routes}
                     </Router>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Promise from 'promise-polyfill'; 
-import dp import './dumpling-palace.json'; 
+// import dp from './dumpling-palace.json'; 
 
 function delayReturn(delay, thing) {
     return new Promise(function(resolve, reject) {
@@ -42,7 +42,7 @@ export function api_list_restaurants() {
                     logo: "https://dtyxqspugqu5z.cloudfront.net/logo/316/240316/20110601Logo.jpg",
                     name: "Cafe 472",
                     order_minimum: 12.0,
-                    price_rating: 2，
+                    price_rating: 2,
                     id: "1234-1234-1234-1234"
                 }
             ]
@@ -149,7 +149,7 @@ export function api_initial_order_status() {
         data: {
             id: "correct-horse-battery-staple",
             closes_at: new Date(new Date()*1 + 300000).toISOString(),
-            restaurant: dp,
+            restaurant: null,
             order: {
                 name: "Jack",
                 venmo: "Jack-Serrino",
