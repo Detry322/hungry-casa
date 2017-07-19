@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actionCreators from '../actions/start_order';
+import * as actionCreators from '../actions/startOrder';
 
 import moment from 'moment';
 
@@ -17,11 +17,11 @@ import { ListItem } from 'material-ui/List';
 
 function mapStateToProps(state) {
     return {
-        restaurants: state.start_order.restaurants,
-        isLoading: state.start_order.isLoading,
-        isLoaded: state.start_order.isLoaded,
-        restaurantLoadingError: state.start_order.restaurantLoadingError,
-        createOrderError: state.start_order.createOrderError,
+        restaurants: state.startOrder.restaurants,
+        isLoading: state.startOrder.isLoading,
+        isLoaded: state.startOrder.isLoaded,
+        restaurantLoadingError: state.startOrder.restaurantLoadingError,
+        createOrderError: state.startOrder.createOrderError,
     };
 }
 
@@ -59,7 +59,6 @@ export class StartOrder extends React.Component {
   }
 
   _shouldDisplayLoading() {
-    console.log(this.props.isLoading);
     return this.props.isLoading;
   }
 
@@ -69,13 +68,6 @@ export class StartOrder extends React.Component {
 
   _shouldDisplay() {
     return !this.props.isLoading && this.props.isLoaded;
-  }
-
-  _autoCompleteDataSource() {
-    return this.props.restaurants.map(restaurant => {
-      text: restaurant.name
-      value: "cool"
-    });
   }
 
   _handleSelectRestaurant(index) {

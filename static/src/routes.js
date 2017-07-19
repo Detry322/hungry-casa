@@ -7,6 +7,7 @@ import { Route } from 'react-router';
 import { Home } from './components/Home';
 import { NotFound } from './components/NotFound';
 import { StartOrder } from './components/StartOrder';
+import { ManageOrder } from './components/ManageOrder';
 
 export const HOME_PATH = '/';
 export const START_ORDER_PATH = '/start';
@@ -23,6 +24,7 @@ export default (
     <div>
         <Route exact path={HOME_PATH} component={Home} />
         <Route exact path={START_ORDER_PATH} component={StartOrder} />
+        <Route exact path={orderHostPath('*')} component={ManageOrder} />
         <Route path="/*" component={NotFound} />
     </div>
 );

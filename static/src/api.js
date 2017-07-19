@@ -58,10 +58,11 @@ export function api_create_order() {
     });
 }
 
-export function api_host_order_status() {
+export function api_order_status() {
     return delayReturn(2000, {
         data: {
             id: "correct-horse-battery-staple",
+            description: "Awesome order",
             closes_at: new Date(new Date()*1 + 300000).toISOString(),
             restaurant_info: {
                 address: {
@@ -144,26 +145,11 @@ export function api_host_order_status() {
     })
 }
 
-export function api_initial_order_status() {
+export function api_place_order() {
     return delayReturn(2000, {
         data: {
             id: "correct-horse-battery-staple",
-            closes_at: new Date(new Date()*1 + 300000).toISOString(),
-            restaurant: null,
-            order: {
-                name: "Jack",
-                venmo: "Jack-Serrino",
-                items: []
-            }
-        }
-    })
-}
-
-
-export function api_order_status() {
-    return delayReturn(2000, {
-        data: {
-            id: "correct-horse-battery-staple",
+            description: "Awesome order",
             closes_at: new Date(new Date()*1 + 300000).toISOString(),
             order: {
                 name: "Jack",
