@@ -5,6 +5,9 @@ import * as actionCreators from '../actions/manageOrder';
 
 import moment from 'moment';
 
+import { Link } from 'react-router';
+import { orderPath } from '../routes';
+
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
@@ -25,6 +28,28 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 import { CountdownTimer } from './CountdownTimer';
 import { RestaurantInfo } from './RestaurantInfo';
 import { OrderList } from './OrderList';
+
+function copyToClipboard(text) {
+    if (window.clipboardData && window.clipboardData.setData) {
+        // IE specific code path to prevent textarea being shown while dialog is visible.
+        return clipboardData.setData("Text", text); 
+
+    } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+        var textarea = document.createElement("textarea");
+        textarea.textContent = text;
+        textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in MS Edge.
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            return document.execCommand("copy");  // Security exception may be thrown by some browsers.
+        } catch (ex) {
+            console.warn("Copy to clipboard failed.", ex);
+            return false;
+        } finally {
+            document.body.removeChild(textarea);
+        }
+    }
+}
 
 function mapStateToProps(state) {
     return {
@@ -56,7 +81,7 @@ export class ManageOrder extends React.Component {
     super(props);
     this.state = {
       deliveryFee: 0,
-      tip: 15,
+      tip: 0,
       tax: 8
     }
   }
@@ -68,10 +93,18 @@ export class ManageOrder extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.order && nextProps.order) {
-      this.setState({
-        deliveryFee: nextProps.order.restaurant_info.delivery_fee.toFixed(2),
-        tax: nextProps.order.restaurant_info.tax.toFixed(2) })
+    if (nextProps.order) {
+      if (!this.props.order) {
+        this.setState({
+          deliveryFee: nextProps.order.restaurant_info.delivery_fee.toFixed(2),
+          tax: nextProps.order.restaurant_info.tax.toFixed(2),
+          tip: (nextProps.order.subtotal * 0.15).toFixed(2)
+        });
+      } else {
+        this.setState({
+          tip: (nextProps.order.subtotal / this.props.order.subtotal * this.state.tip ).toFixed(2)
+        });
+      }
     }
   }
 
@@ -89,9 +122,9 @@ export class ManageOrder extends React.Component {
 
   _total() {
     var tax = (+this.state.tax || 0)/100 + 1.0
-    var tip = (+this.state.tip || 0)/100 + 1.0
+    var tip = (+this.state.tip || 0);
     var fee = (+this.state.deliveryFee || 0)
-    return (this.props.order.subtotal + fee)*tax*tip;
+    return (this.props.order.subtotal + fee)*tax + tip;
   }
 
   _calculatePrice(order) {
@@ -100,6 +133,10 @@ export class ManageOrder extends React.Component {
 
   _note() {
     return this.props.order.description + " - " + this.props.order.restaurant_info.name + " - We used group-order to create this order!"
+  }
+
+  _fullLink() {
+    return window.location.protocol + "//" + window.location.host + orderPath(this.props.order.id)
   }
 
   render() {
@@ -132,11 +169,27 @@ export class ManageOrder extends React.Component {
                 <CardText>
                   <CountdownTimer expiration={this.props.order.closes_at} />
                   <br />
+                  { moment().isBefore(moment(this.props.order.closes_at)) && (
+                    <div>
+                      <Toolbar>
+                        <ToolbarGroup>
+                          <RaisedButton label="Copy shareable order link" onClick={() => copyToClipboard(this._fullLink())} />
+                          <ToolbarTitle text={(
+                            <Link to={orderPath(this.props.order.id)} target="_blank">
+                              {this._fullLink()}
+                            </Link>
+                          )} />
+                        </ToolbarGroup>
+                      </Toolbar>
+                      <br />
+                    </div>
+                  )}
                   <RestaurantInfo info={this.props.order.restaurant_info} />
                   <br />
                   <Card>
                     <CardHeader
                       title={"Total: $" + this._total().toFixed(2)}
+                      subtitle={"Subtotal: $" + this.props.order.subtotal.toFixed(2) }
                       actAsExpander={true}
                       showExpandableButton={true} />
                     <CardText expandable={true}>
@@ -150,7 +203,7 @@ export class ManageOrder extends React.Component {
                           leftIcon={<Add />}
                           primaryText={(
                             <TextField
-                              style={{marginTop: '-1.6em'}}
+                              style={{marginTop: '-1.8em'}}
                               value={this.state.deliveryFee}
                               hintText="In dollars"
                               errorText={(+this.state.deliveryFee + 1) ? "" : "Must be numeric."}
@@ -162,7 +215,7 @@ export class ManageOrder extends React.Component {
                           leftIcon={<Add />}
                           primaryText={(
                             <TextField
-                              style={{marginTop: '-1.6em'}}
+                              style={{marginTop: '-1.8em'}}
                               value={this.state.tax}
                               hintText="e.g. 8"
                               errorText={(+this.state.tax + 1) ? "" : "Must be numeric."}
@@ -174,11 +227,11 @@ export class ManageOrder extends React.Component {
                           leftIcon={<Add />}
                           primaryText={(
                             <TextField
-                              style={{marginTop: '-1.6em'}}
+                              style={{marginTop: '-1.8em'}}
                               value={this.state.tip}
                               hintText="e.g. 15 or 20"
                               errorText={(+this.state.tip + 1) ? "" : "Must be numeric."}
-                              floatingLabelText="Tip %"
+                              floatingLabelText="Tip"
                               onChange={(e, value) => this.setState({tip: value})} />
                           )} />
                         <ListItem disabled
