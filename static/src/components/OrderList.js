@@ -54,6 +54,7 @@ export class OrderList extends React.Component {
         if (item.choices.length == 0) {
             return (
                 <ListItem
+                    disabled
                     primaryText={item.name}
                     leftIcon={<MapsRestaurant/>}
                     secondaryText={"$" + item.price}/>
@@ -68,6 +69,7 @@ export class OrderList extends React.Component {
                     primaryTogglesNestedList={true}
                     nestedItems={item.choices.map((choice) => (
                         <ListItem
+                            disabled
                             leftIcon={<BulletListItem />}
                             primaryText={choice.selected.join(', ')}
                             secondaryText={choice.name} />
