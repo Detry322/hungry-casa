@@ -30,12 +30,15 @@ def download_restaurant(grubhub_id):
 
 def clean_json(downloaded_json):
     result = {}
-    result['address'] = downloaded_json['restaurant']['address']
-    result['logo'] = downloaded_json['restaurant']['logo']
-    result['name'] = downloaded_json['restaurant']['name']
-    result['price_rating'] = int(downloaded_json['restaurant']['price_rating'])
-    result['delivery_fee'] = downloaded_json['restaurant_availability']['delivery_fee']['amount']/100.0
-    result['order_minimum'] = downloaded_json['restaurant_availability']['order_minimum']['amount']/100.0
+    restaurant_info = {}
+    restaurant_info['address'] = downloaded_json['restaurant']['address']
+    restaurant_info['logo'] = downloaded_json['restaurant']['logo']
+    restaurant_info['name'] = downloaded_json['restaurant']['name']
+    restaurant_info['price_rating'] = int(downloaded_json['restaurant']['price_rating'])
+    restaurant_info['delivery_fee'] = downloaded_json['restaurant_availability']['delivery_fee']['amount']/100.0
+    restaurant_info['order_minimum'] = downloaded_json['restaurant_availability']['order_minimum']['amount']/100.0
+    restaurant_info['tax'] = downloaded_json['restaurant_availability']['sales_tax']
+    result['restaurant_info'] = restaurant_info
     menu = []
     for category_json in downloaded_json['restaurant']['menu_category_list']:
         category = {}
