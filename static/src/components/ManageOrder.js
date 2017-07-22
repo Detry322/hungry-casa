@@ -1,4 +1,5 @@
 import React from 'react';
+import Media from 'react-media'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../actions/manageOrder';
@@ -173,12 +174,17 @@ export class ManageOrder extends React.Component {
                     <div>
                       <Toolbar>
                         <ToolbarGroup>
-                          <RaisedButton label="Copy shareable order link" onClick={() => copyToClipboard(this._fullLink())} />
-                          <ToolbarTitle text={(
-                            <Link to={orderPath(this.props.order.id)} target="_blank">
-                              {this._fullLink()}
-                            </Link>
-                          )} />
+                          <ToolbarTitle text="Order link" />
+                        </ToolbarGroup>
+                        <ToolbarGroup>
+                          <Media query="(min-width: 992px)">
+                            <ToolbarTitle text={(
+                              <Link to={orderPath(this.props.order.id)} target="_blank">
+                                {this._fullLink()}
+                              </Link>
+                            )} />
+                          </Media>
+                          <RaisedButton label="Copy" onClick={() => copyToClipboard(this._fullLink())} />
                         </ToolbarGroup>
                       </Toolbar>
                       <br />
