@@ -105,8 +105,9 @@ export class EditableOrderList extends React.Component {
                     secondaryText={"$" + item.price}
                     initiallyOpen={true}
                     primaryTogglesNestedList={true}
-                    nestedItems={item.choices.map((choice) => (
+                    nestedItems={item.choices.map((choice, j) => (
                         <ListItem
+                            key={j}
                             disabled
                             leftIcon={<BulletListItem />}
                             primaryText={choice.selected.join(', ')}

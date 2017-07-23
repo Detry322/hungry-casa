@@ -75,6 +75,18 @@ export class PlaceOrder extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      if (this.props.saveSequenceNumber != this.state.saveSequenceNumber && !this.props.isSaving) {
+        this.props.placeOrderSave(this.state.saveSequenceNumber)
+      }
+    }, 50);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   componentWillMount() {
     if (!this.props.isLoading && !this.props.error && (!this.props.orderMeta || this.props.orderMeta.id != this.props.params.splat)) {
       this.props.placeOrderLoad(this.props.params.splat);
@@ -109,9 +121,9 @@ export class PlaceOrder extends React.Component {
 
   _handleOrderChange(newOrder) {
     this.setState({
-      saveSequenceNumber: this.state.saveSequenceNumber + 1
+      saveSequenceNumber: this.state.saveSequenceNumber + 1,
+      order: newOrder
     })
-    this.props.placeOrderSave(this.props.saveSequenceNumber + 1)
   }
 
   _orderSaveText() {
@@ -131,19 +143,25 @@ export class PlaceOrder extends React.Component {
   }
 
   _handleNameChange(newName) {
-    this.setState({
-      order: Object.assign({}, this.state.order, {
-        name: newName
-      })
-    })
+    var newOrder = Object.assign({}, this.state.order, { name: newName });
+    if (this.state.saveSequenceNumber != 0 || this.state.order.items.length != 0) {
+      this._handleOrderChange(newOrder)
+    } else {
+      this.setState({
+        order: newOrder
+      });
+    }
   }
 
   _handleVenmoChange(newVenmo) {
-    this.setState({
-      order: Object.assign({}, this.state.order, {
-        venmo: newVenmo.split('@').splice(-1).pop()
-      })
-    })
+    var newOrder = Object.assign({}, this.state.order, { venmo: newVenmo });
+    if (this.state.saveSequenceNumber != 0 || this.state.order.items.length != 0) {
+      this._handleOrderChange(newOrder)
+    } else {
+      this.setState({
+        order: newOrder
+      });
+    }
   }
 
   render() {
