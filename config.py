@@ -7,6 +7,10 @@ class DevConfig(object):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
+class ProdConfig(object):
+    SECRET_KEY = os.environ.get('SECRET_KEY') or os.urandom(24).encode('hex')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class TestingConfig(object):
     """Development configuration."""
