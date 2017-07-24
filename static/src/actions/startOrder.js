@@ -17,6 +17,13 @@ export function fetchRestaurantsRequest() {
 }
 
 export function fetchRestaurantsSuccess(restaurants) {
+    restaurants.sort((a, b) => {
+        var aup = a.name.toUpperCase()
+        var bup = b.name.toUpperCase()
+        if (aup < bup) return -1;
+        else if (aup == bup) return 0;
+        else return 1;
+    })
     return {
         type: FETCH_RESTAURANTS_SUCCESS,
         payload: restaurants

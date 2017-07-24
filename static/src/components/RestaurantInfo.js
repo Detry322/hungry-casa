@@ -39,14 +39,11 @@ export class RestaurantInfo extends React.Component {
                     actAsExpander={true}
                     showExpandableButton={true}
                     title={this.props.info.name}
-                    subtitle={ Array(this.props.info.price_rating).join("$") }
+                    subtitle={ this._address() }
                     avatar={ this.props.info.logo } />
                 <CardText expandable={true}>
                     <List disabled={true}>
                         <Subheader>At a glance</Subheader>
-                        <ListItem disabled
-                            primaryText={this._address()}
-                            leftIcon={<Loc />} />
                         <ListItem disabled
                             primaryText={"$" + this.props.info.order_minimum.toFixed(2) }
                             secondaryText="Order minimum"

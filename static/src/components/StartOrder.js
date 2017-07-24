@@ -15,6 +15,8 @@ import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
 import { ListItem } from 'material-ui/List';
 
+import { RestaurantInfo } from './RestaurantInfo';
+
 function mapStateToProps(state) {
     return {
         restaurants: state.startOrder.restaurants,
@@ -116,15 +118,6 @@ export class StartOrder extends React.Component {
             {this._shouldDisplay() && (
               <div>
                 <ListItem disabled>
-                  <TextField
-                    fullWidth
-                    value={this.state.description}
-                    floatingLabelText="Description (optional)"
-                    hintText="e.g. Pizza order"
-                    onChange={(e, value) => this.setState({description: value})}
-                  />
-                </ListItem>
-                <ListItem disabled>
                   <SelectField
                     floatingLabelText="Select a Restaurant"
                     onChange={(e, index) => this._handleSelectRestaurant(index)}
@@ -133,10 +126,18 @@ export class StartOrder extends React.Component {
                     fullWidth
                   >
                     { this.props.restaurants.map((restaurant) => (
-                      <MenuItem key={restaurant.id} value={restaurant.id} primaryText={restaurant.name} />
+                      <MenuItem
+                        key={restaurant.id}
+                        value={restaurant.id}
+                        primaryText={restaurant.name}/>
                     ))}
                   </SelectField>
                 </ListItem>
+                { this.state.selectedRestaurant && (
+                  <ListItem disabled>
+                    <RestaurantInfo info={this.state.selectedRestaurant} />
+                  </ListItem>
+                )}
                 <ListItem disabled>
                   <SelectField
                     floatingLabelText="Stop accepting orders in:"
@@ -154,6 +155,15 @@ export class StartOrder extends React.Component {
                     <MenuItem value={21600} primaryText="6 hours" />
                     <MenuItem value={86400} primaryText="1 day" />
                   </SelectField>
+                </ListItem>
+                <ListItem disabled>
+                  <TextField
+                    fullWidth
+                    value={this.state.description}
+                    floatingLabelText="Description (optional)"
+                    hintText="e.g. Pizza order"
+                    onChange={(e, value) => this.setState({description: value})}
+                  />
                 </ListItem>
                 <ListItem disabled>
                   <RaisedButton label="Create order" fullWidth onClick={() => this._handleCreateOrder()} />
