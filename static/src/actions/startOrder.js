@@ -42,7 +42,7 @@ export function fetchRestaurants() {
         dispatch(fetchRestaurantsRequest());
         api_list_restaurants()
             .then(response => response.data)
-            .then(data => dispatch(fetchRestaurantsSuccess(data.restaurant_infos)))
+            .then(data => dispatch(fetchRestaurantsSuccess(data.restaurants)))
             .catch(error => dispatch(fetchRestaurantsFailure(error)));
     }
 }
@@ -67,10 +67,10 @@ export function createOrderSuccess(order) {
     }
 }
 
-export function createOrder(description, restaurant_id, expiration) {
+export function createOrder(description, closes_at, restaurant_id) {
     return (dispatch) => {
         dispatch(createOrderRequest());
-        api_create_order(description, restaurant_id, expiration)
+        api_create_order(description, closes_at, restaurant_id)
             .then(response => response.data)
             .then(order => {
                 browserHistory.push(orderHostPath(order.id));

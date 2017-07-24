@@ -99,14 +99,26 @@ export class ManageOrder extends React.Component {
         this.setState({
           deliveryFee: nextProps.order.restaurant_info.delivery_fee.toFixed(2),
           tax: nextProps.order.restaurant_info.tax.toFixed(2),
-          tip: (nextProps.order.subtotal * 0.15).toFixed(2)
+          tip: (this._subtotal(nextProps.order) * (1 + nextProps.order.restaurant_info.tax/100) * 0.20).toFixed(2)
         });
       } else {
         this.setState({
-          tip: (nextProps.order.subtotal / this.props.order.subtotal * this.state.tip ).toFixed(2)
+          tip: (this._subtotal(nextProps.order) / this._subtotal(this.props.order) * this.state.tip ).toFixed(2)
         });
       }
     }
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      if (!this.state.isRefreshing) {
+        this.props.refreshOrder(this.props.params.splat)
+      }
+    }, 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   _shouldDisplayLoading() {
@@ -121,15 +133,23 @@ export class ManageOrder extends React.Component {
     return !this.props.isLoading && !this.props.error && this.props.order;
   }
 
+  _subtotal(order) {
+    var price = 0;
+    order.orders.forEach((o) => {
+      price += o.subtotal;
+    })
+    return price;
+  }
+
   _total() {
     var tax = (+this.state.tax || 0)/100 + 1.0
     var tip = (+this.state.tip || 0);
     var fee = (+this.state.deliveryFee || 0)
-    return (this.props.order.subtotal + fee)*tax + tip;
+    return (this._subtotal(this.props.order) * tax) + fee + tip;
   }
 
   _calculatePrice(order) {
-    return order.subtotal / this.props.order.subtotal * this._total();
+    return order.subtotal / this._subtotal(this.props.order) * this._total();
   }
 
   _note() {
@@ -195,32 +215,21 @@ export class ManageOrder extends React.Component {
                   <Card>
                     <CardHeader
                       title={"Total: $" + this._total().toFixed(2)}
-                      subtitle={"Subtotal: $" + this.props.order.subtotal.toFixed(2) }
+                      subtitle={"Subtotal: $" + this._subtotal(this.props.order).toFixed(2) }
                       actAsExpander={true}
                       showExpandableButton={true} />
                     <CardText expandable={true}>
                       <List disabled>
                         <ListItem disabled
                           leftIcon={ <Money /> }
-                          primaryText={"$" + this.props.order.subtotal.toFixed(2) }
+                          primaryText={"$" + this._subtotal(this.props.order).toFixed(2) }
                           secondaryText="Subtotal" />
                         <ListItem
                           disabled
                           leftIcon={<Add />}
                           primaryText={(
                             <TextField
-                              style={{marginTop: '-1.8em'}}
-                              value={this.state.deliveryFee}
-                              hintText="In dollars"
-                              errorText={(+this.state.deliveryFee + 1) ? "" : "Must be numeric."}
-                              floatingLabelText="Delivery Fee"
-                              onChange={(e, value) => this.setState({deliveryFee: value})} />
-                          )} />
-                        <ListItem
-                          disabled
-                          leftIcon={<Add />}
-                          primaryText={(
-                            <TextField
+                              fullWidth
                               style={{marginTop: '-1.8em'}}
                               value={this.state.tax}
                               hintText="e.g. 8"
@@ -233,6 +242,20 @@ export class ManageOrder extends React.Component {
                           leftIcon={<Add />}
                           primaryText={(
                             <TextField
+                              fullWidth
+                              style={{marginTop: '-1.8em'}}
+                              value={this.state.deliveryFee}
+                              hintText="In dollars"
+                              errorText={(+this.state.deliveryFee + 1) ? "" : "Must be numeric."}
+                              floatingLabelText="Delivery Fee (depends on location, might be wrong)"
+                              onChange={(e, value) => this.setState({deliveryFee: value})} />
+                          )} />
+                        <ListItem
+                          disabled
+                          leftIcon={<Add />}
+                          primaryText={(
+                            <TextField
+                              fullWidth
                               style={{marginTop: '-1.8em'}}
                               value={this.state.tip}
                               hintText="e.g. 15 or 20"
@@ -250,6 +273,9 @@ export class ManageOrder extends React.Component {
                 </CardText>
                 <Subheader>Orders</Subheader>
                 <CardText>
+                  { this.props.order.orders.length == 0 && (
+                    "No one has placed any orders yet."
+                    )}
                   { this.props.order.orders.map((order, i) => (
                     <div key={i}>
                       <OrderList order={order} total={this._calculatePrice(order)} note={this._note()} />

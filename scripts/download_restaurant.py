@@ -15,7 +15,7 @@ def get_auth_token():
     r = requests.post(BASE_URL, data=json.dumps(POST_BODY), headers=HEADERS)
     return r.json()['session_handle']['access_token']
 
-def download_restaurant(grubhub_id):
+def download_restaurant_unclean(grubhub_id):
     BASE_URL = "https://api-gtm.grubhub.com/restaurants/{}".format(grubhub_id)
     QUERY = {
         "hideChoiceCategories": "false",
@@ -54,7 +54,7 @@ def clean_json(downloaded_json):
                 choice = {}
                 choice['name'] = choice_json['name']
                 choice['min_choices'] = choice_json.get('min_choice_options', 0)
-                choice['max_choices'] = choice_json.get('max_choice_options', float('inf'))
+                choice['max_choices'] = choice_json.get('max_choice_options', "Infinity")
                 options = []
                 for option_json in choice_json['choice_option_list']:
                     option = {}
@@ -72,10 +72,14 @@ def clean_json(downloaded_json):
     result['menu'] = menu
     return result
 
-def main(grubhub_id):
-    downloaded_json = download_restaurant(grubhub_id)
+def download_restaurant(grubhub_id):
+    downloaded_json = download_restaurant_unclean(grubhub_id)
     cleaned_json = clean_json(downloaded_json)
-    print json.dumps(cleaned_json, sort_keys=True, indent=4, separators=(',', ': '))
+    return cleaned_json
+
+def main(grubhub_id):
+    downloaded_json = download_restaurant_unclean(grubhub_id)
+    print json.dumps(downloaded_json, sort_keys=True, indent=4, separators=(',', ': '))
 
 if __name__ == "__main__":
     grubhub_id = sys.argv[1]

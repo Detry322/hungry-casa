@@ -32,7 +32,7 @@ export function placeOrderLoadFailure(error) {
 export function placeOrderLoad(order_id) {
     return (dispatch) => {
         dispatch(placeOrderLoadRequest());
-        api_load_order()
+        api_load_order(order_id)
             .then(response => response.data)
             .then(order_meta => dispatch(placeOrderLoadSuccess(order_meta)))
             .catch(error => dispatch(placeOrderLoadFailure(error)));
@@ -60,10 +60,10 @@ export function placeOrderSaveFailure(error) {
     }
 }
 
-export function placeOrderSave(sequenceNumber) {
+export function placeOrderSave(order_id, sequenceNumber, order) {
     return (dispatch) => {
         dispatch(placeOrderSaveRequest());
-        api_save_order(sequenceNumber)
+        api_save_order(order_id, sequenceNumber, order)
             .then(response => response.data)
             .then(response => dispatch(placeOrderSaveSuccess(response)))
             .catch(error => dispatch(placeOrderSaveFailure(error)));

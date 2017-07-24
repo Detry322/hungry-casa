@@ -57,14 +57,14 @@ export class OrderList extends React.Component {
                     disabled
                     primaryText={item.name}
                     leftIcon={<MapsRestaurant/>}
-                    secondaryText={"$" + item.price}/>
+                    secondaryText={"$" + item.price.toFixed(2)}/>
             );
         } else {
             return (
                 <ListItem
                     primaryText={item.name}
                     leftIcon={<MapsRestaurant/>}
-                    secondaryText={"$" + item.price}
+                    secondaryText={"$" + item.price.toFixed(2)}
                     initiallyOpen={true}
                     primaryTogglesNestedList={true}
                     nestedItems={item.choices.map((choice) => (

@@ -156,11 +156,11 @@ export class MenuSelector extends React.Component {
     _selectText(choice) {
 
         if (choice.min_choices == 0) {
-            return (choice.max_choices == Infinity) ? "Select any items." : "Select up to " + this._itemSuffix(choice.max_choices)
+            return (choice.max_choices == "Infinity") ? "Select any items." : "Select up to " + this._itemSuffix(choice.max_choices)
         } else if (choice.min_choices == choice.max_choices) {
             return "Select " + this._itemSuffix(choice.min_choices)
         } else {
-            if (choice.max_choices == Infinity) {
+            if (choice.max_choices == "Infinity") {
                 return "Select at least " + this._itemSuffix(choice.min_choices)
             }
             return "Select between " + choice.min_choices + " and " + choice.max_choices + " items."
@@ -176,7 +176,7 @@ export class MenuSelector extends React.Component {
         for (var i = 0; i < choice.options.length; i += 1) {
             count += !!choice.options[i].checked
         }
-        return count >= choice.min_choices && count <= choice.max_choices
+        return count >= choice.min_choices && count <= +choice.max_choices
     }
 
     _toggleBox(i, j) {
@@ -196,7 +196,7 @@ export class MenuSelector extends React.Component {
                         key={j}
                         leftCheckbox={
                             <Checkbox
-                                checked={option.checked}
+                                checked={!!option.checked}
                                 onClick={() => this._toggleBox(i, j)} />
                         }
                         primaryText={option.name}

@@ -86,9 +86,9 @@ export class StartOrder extends React.Component {
       return;
     }
     let description = this.state.description || ('Food order on ' + moment().format('MM/DD/YYYY'));
+    let closes_at = new Date(new Date()*1 + this.state.selectedTimeLimit*1000).toISOString();
     let restaurant_id = this.state.selectedRestaurant.id;
-    let expiration = new Date(new Date()*1 + this.state.selectedTimeLimit*1000).toISOString();
-    this.props.createOrder(description, restaurant_id, expiration);
+    this.props.createOrder(description, closes_at, restaurant_id);
   }
 
   render() {

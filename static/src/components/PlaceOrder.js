@@ -60,8 +60,8 @@ export class PlaceOrder extends React.Component {
 
   _emptyOrder() {
     return {
-      name: "Jack",
-      venmo: "Jack",
+      name: "",
+      venmo: "",
       subtotal: 0.0,
       items: []
     }
@@ -87,7 +87,7 @@ export class PlaceOrder extends React.Component {
         })
       }
       if (this.props.saveSequenceNumber != this.state.saveSequenceNumber && !this.props.isSaving) {
-        this.props.placeOrderSave(this.state.saveSequenceNumber)
+        this.props.placeOrderSave(this.props.params.splat, this.state.saveSequenceNumber, this.state.order)
       }
     }, 50);
   }
@@ -129,6 +129,11 @@ export class PlaceOrder extends React.Component {
   }
 
   _handleOrderChange(newOrder) {
+    var newSubtotal = 0.0;
+    newOrder.items.forEach((item) => {
+      newSubtotal += item.price
+    })
+    newOrder.subtotal = newSubtotal
     this.setState({
       saveSequenceNumber: this.state.saveSequenceNumber + 1,
       order: newOrder
@@ -193,7 +198,7 @@ export class PlaceOrder extends React.Component {
                   {this.props.error.toString()}
                 </CardText>
                 <CardText>
-                  <RaisedButton label="Try again" fullWidth={true} onClick={() => this.props.loadOrder(this.props.params.splat)} />
+                  <RaisedButton label="Try again" fullWidth={true} onClick={() => this.props.placeOrderLoad(this.props.params.splat)} />
                 </CardText>
               </div>
             )}

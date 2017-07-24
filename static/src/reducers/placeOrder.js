@@ -29,7 +29,7 @@ export default createReducer(initialState, {
             isSaving: false,
             orderMeta
         }),
-    [PLACE_ORDER_SAVE_FAILURE]: (state, error) =>
+    [PLACE_ORDER_LOAD_FAILURE]: (state, error) =>
         Object.assign({}, state, {
             isLoading: false,
             isSaving: false,
