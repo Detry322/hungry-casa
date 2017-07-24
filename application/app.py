@@ -1,6 +1,9 @@
-from flask import request, render_template, jsonify
+from flask import request, render_template, jsonify, send_from_directory
 from .models import Restaurant, Entry, Order
 from index import app, db
+from config import basedir
+
+import os
 
 import json
 
@@ -8,6 +11,9 @@ import json
 def index():
     return render_template('index.html')
 
+@app.route('/icon.png', methods=['GET'])
+def icon():
+    return send_from_directory(os.path.join(basedir,'static'), 'icon.png')
 
 @app.route('/<path:path>', methods=['GET'])
 def any_root_path(path):
