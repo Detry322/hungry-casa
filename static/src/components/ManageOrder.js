@@ -103,7 +103,7 @@ export class ManageOrder extends React.Component {
         });
       } else {
         this.setState({
-          tip: (this._subtotal(nextProps.order) / this._subtotal(this.props.order) * this.state.tip || 0).toFixed(2)
+          tip: ((this._subtotal(nextProps.order) / this._subtotal(this.props.order) * this.state.tip) || this.state.tip).toFixed(2)
         });
       }
     }
@@ -149,7 +149,7 @@ export class ManageOrder extends React.Component {
   }
 
   _calculatePrice(order) {
-    return order.subtotal / this._subtotal(this.props.order) * this._total();
+    return (order.subtotal / this._subtotal(this.props.order) * this._total()) || 0;
   }
 
   _note() {
