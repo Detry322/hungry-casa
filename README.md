@@ -1,4 +1,4 @@
-# group-order
+# hungry-casa
 System for ordering food together
 
 * Python 2.7+

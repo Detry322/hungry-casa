@@ -153,7 +153,7 @@ export class ManageOrder extends React.Component {
   }
 
   _note() {
-    return this.props.order.description + " - " + this.props.order.restaurant_info.name + " - We used group-order to create this order!"
+    return this.props.order.description + " - " + this.props.order.restaurant_info.name + " - We used https://hungry.casa to simplify charges!"
   }
 
   _fullLink() {

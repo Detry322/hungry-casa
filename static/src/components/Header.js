@@ -11,7 +11,7 @@ export function Header(props) {
     return (
         <header>
             <AppBar
-              title="Group Order"
+              title="Hungry Casa!"
               iconElementLeft={
                     <IconButton>
                         <ActionHome onClick={() => browserHistory.push(HOME_PATH)} />
