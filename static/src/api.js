@@ -182,37 +182,37 @@ export function api_load_order() {
                 price_rating: 3,
                 id: "4321-4321-4321-4321"
             },
-            order: {
-                name: "Jack",
-                venmo: "Jack-Serrino",
-                subtotal: 19.95,
-                items: [
-                    {
-                        name: "A15. Enoki Mushroom with Beef Tripe",
-                        price: 12.00,
-                        choices: [
-                            {
-                                name: "Choose a spice level",
-                                selected: [
-                                    "Spicy"
-                                ]
-                            },
-                            {
-                                name: "Choose add-ons",
-                                selected: [
-                                    "White Rice",
-                                    "Coca-Cola"
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        name: "A12. Steamed Pork with Garlic",
-                        price: 7.95,
-                        choices: []
-                    }
-                ]
-            },
+            // order: {
+            //     name: "Jack",
+            //     venmo: "Jack-Serrino",
+            //     subtotal: 19.95,
+            //     items: [
+            //         {
+            //             name: "A15. Enoki Mushroom with Beef Tripe",
+            //             price: 12.00,
+            //             choices: [
+            //                 {
+            //                     name: "Choose a spice level",
+            //                     selected: [
+            //                         "Spicy"
+            //                     ]
+            //                 },
+            //                 {
+            //                     name: "Choose add-ons",
+            //                     selected: [
+            //                         "White Rice",
+            //                         "Coca-Cola"
+            //                     ]
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             name: "A12. Steamed Pork with Garlic",
+            //             price: 7.95,
+            //             choices: []
+            //         }
+            //     ]
+            // },
             "menu": [
                 {
                     "items": [
@@ -250,10 +250,8 @@ export function api_load_order() {
                                             "price": 3.0
                                         }
                                     ],
-                                    "requirements": {
-                                        "max_choices": 1,
-                                        "min_choices": 1
-                                    }
+                                    "max_choices": 1,
+                                    "min_choices": 1
                                 }
                             ],
                             "description": "",
@@ -307,10 +305,8 @@ export function api_load_order() {
                                             "price": 0.0
                                         }
                                     ],
-                                    "requirements": {
-                                        "max_choices": 3,
-                                        "min_choices": 3
-                                    }
+                                    "max_choices": 3,
+                                    "min_choices": 3
                                 },
                                 {
                                     "name": "Choose a rice",
@@ -324,10 +320,8 @@ export function api_load_order() {
                                             "price": 1.0
                                         }
                                     ],
-                                    "requirements": {
-                                        "max_choices": 1,
-                                        "min_choices": 1
-                                    }
+                                    "max_choices": 1,
+                                    "min_choices": 1
                                 }
                             ],
                             "description": "Choice of 3 items with white rice. ",

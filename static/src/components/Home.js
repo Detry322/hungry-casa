@@ -17,16 +17,6 @@ export function Home(props) {
                     <RaisedButton label="Start an order" fullWidth={true} onClick={() => browserHistory.push(START_ORDER_PATH)}/>
                 </CardText>
             </Card>
-            <Card>
-                <CardTitle title="Join an order" />
-                <CardText>
-                    Know the order code? Join below.
-                </CardText>
-                <CardText>
-                    <TextField hintText="correct-horse-battery-staple" fullWidth={true} />
-                    <RaisedButton label="Join an order" fullWidth={true} />
-                </CardText>
-            </Card>
         </section>
     );
 }

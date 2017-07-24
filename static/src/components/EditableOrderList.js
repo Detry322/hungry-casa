@@ -14,9 +14,11 @@ import Paper from 'material-ui/Paper';
 import Add from 'material-ui/svg-icons/content/add';
 import FlatButton from 'material-ui/FlatButton';
 
+import MapsRestaurant from 'material-ui/svg-icons/maps/restaurant';
+import IconButton from 'material-ui/IconButton';
 import { MenuSelector } from './MenuSelector'
 
-import MapsRestaurant from 'material-ui/svg-icons/maps/restaurant';
+import Delete from 'material-ui/svg-icons/action/delete';
 
 import BulletListItem from 'material-ui/svg-icons/editor/format-list-bulleted';
 
@@ -42,29 +44,14 @@ export class EditableOrderList extends React.Component {
         order: React.PropTypes.any,
         menu: React.PropTypes.any,
         changeOrder: React.PropTypes.func,
-        checkEditable: React.PropTypes.func
+        editable: React.PropTypes.bool
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            modalOpen: false,
-            editable: props.checkEditable()
+            modalOpen: false
         };
-    }
-
-    componentDidMount() {
-        this.interval = setInterval(() => {
-            if (this.props.checkEditable() != this.state.editable) {
-                this.setState({
-                    editable: this.props.checkEditable()
-                })
-            }
-        }, 50);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
     }
 
     _handleOpen() {
@@ -89,20 +76,34 @@ export class EditableOrderList extends React.Component {
     }
 
     _foodItem(i, item) {
+        var rightIcon = (
+          <IconButton
+            touch={true}
+            onClick={() => this._handleDelete(i)}
+            tooltip="Delete"
+            tooltipPosition="bottom-left">
+                
+            <Delete />
+          </IconButton>
+        )
+
         if (item.choices.length == 0) {
             return (
                 <ListItem
                     disabled
                     primaryText={item.name}
                     leftIcon={<MapsRestaurant/>}
-                    secondaryText={"$" + item.price}/>
+                    rightIconButton={rightIcon}
+                    secondaryText={"$" + item.price.toFixed(2)}/>
             );
         } else {
             return (
                 <ListItem
+                    disabled
                     primaryText={item.name}
                     leftIcon={<MapsRestaurant/>}
-                    secondaryText={"$" + item.price}
+                    rightIconButton={rightIcon}
+                    secondaryText={"$" + item.price.toFixed(2)}
                     initiallyOpen={true}
                     primaryTogglesNestedList={true}
                     nestedItems={item.choices.map((choice, j) => (
@@ -118,13 +119,15 @@ export class EditableOrderList extends React.Component {
     }
 
     _handleAdd(item) {
-        this.props.changeOrder(this.props.order)
+        var orderCopy = JSON.parse(JSON.stringify(this.props.order))
+        orderCopy.items.push(item)
+        this.props.changeOrder(orderCopy)
     }
 
     _handleDelete(i) {
-        if (this.props.editable) {
-            this.props.changeOrder(this.props.order)
-        }
+        var orderCopy = JSON.parse(JSON.stringify(this.props.order))
+        orderCopy.items = orderCopy.items.filter((x, j) => i != j)
+        this.props.changeOrder(orderCopy)
     }
 
     render() {
@@ -143,7 +146,7 @@ export class EditableOrderList extends React.Component {
                                     {this._foodItem(i, item)}
                                 </div>
                             ))}
-                            { this.state.editable && (
+                            { this.props.editable && (
                                 <ListItem
                                     primaryText="Add an item."
                                     leftIcon={ <Add /> }

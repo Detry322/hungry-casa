@@ -70,6 +70,7 @@ export class PlaceOrder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      editable: true,
       saveSequenceNumber: 0,
       order: this._emptyOrder()
     }
@@ -77,6 +78,14 @@ export class PlaceOrder extends React.Component {
 
   componentDidMount() {
     this.interval = setInterval(() => {
+      if (this.props.orderMeta) {
+        var editable = moment().isBefore(moment(this.props.orderMeta.closes_at));
+      }
+      if (editable != this.state.editable) {
+        this.setState({
+          editable
+        })
+      }
       if (this.props.saveSequenceNumber != this.state.saveSequenceNumber && !this.props.isSaving) {
         this.props.placeOrderSave(this.state.saveSequenceNumber)
       }
@@ -204,6 +213,7 @@ export class PlaceOrder extends React.Component {
                   <TextField style={{marginTop: '-0.5em'}}
                     fullWidth
                     value={this.state.order.name}
+                    disabled={!this.state.editable}
                     floatingLabelText="Your name"
                     hintText="e.g. Joe Schmoe"
                     onChange={(e, value) => this._handleNameChange(value)} />
@@ -211,6 +221,7 @@ export class PlaceOrder extends React.Component {
                     style={{marginTop: '-1em'}}
                     fullWidth
                     value={this.state.order.venmo}
+                    disabled={!this.state.editable}
                     floatingLabelText="Your Venmo username"
                     hintText="e.g. Joe-Schmoe (no @ symbol, please)"
                     onChange={(e, value) => this._handleVenmoChange(value)} />
@@ -221,9 +232,9 @@ export class PlaceOrder extends React.Component {
                     <CardText>
                       <EditableOrderList
                         order={this.state.order}
-                        menu={this.props.menu}
+                        menu={this.props.orderMeta.menu}
                         changeOrder={(newOrder) => this._handleOrderChange(newOrder)}
-                        checkEditable={() => moment().isBefore(moment(this.props.orderMeta.closes_at))} />
+                        editable={this.state.editable} />
                       <br />
                       <div>
                       { this._orderSaveText() }

@@ -53,10 +53,8 @@ def clean_json(downloaded_json):
             for choice_json in item_json['choice_category_list']:
                 choice = {}
                 choice['name'] = choice_json['name']
-                choice['requirements'] = {
-                    "min_choices": choice_json.get('min_choice_options', 0),
-                    "max_choices": choice_json.get('max_choice_options', float('inf'))
-                }
+                choice['min_choices'] = choice_json.get('min_choice_options', 0)
+                choice['max_choices'] = choice_json.get('max_choice_options', float('inf'))
                 options = []
                 for option_json in choice_json['choice_option_list']:
                     option = {}
