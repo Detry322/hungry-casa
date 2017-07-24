@@ -11,8 +11,6 @@ System for ordering food together
 * SCSS processing
 * Webpack
 
-![screenshot](http://i.imgur.com/ZIS4qkw.png)
-
 ### Create DB
 ```sh
 $ python manage.py create_db
