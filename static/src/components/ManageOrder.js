@@ -103,7 +103,7 @@ export class ManageOrder extends React.Component {
         });
       } else {
         this.setState({
-          tip: (this._subtotal(nextProps.order) / this._subtotal(this.props.order) * this.state.tip ).toFixed(2)
+          tip: (this._subtotal(nextProps.order) / this._subtotal(this.props.order) * this.state.tip || 0).toFixed(2)
         });
       }
     }
